@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./../resources/main.xhtml">
+    
+    <ui:define name="tarefas">
+        <p:fieldset legend="Cadastrar Pessoa"> 
+            <h:form>
+                <p:wizard backLabel="Anterior" nextLabel="Próximo">
+                    <p:tab title="Informações Pessoais" id="infoPessoal">
+                        <p:panel header="Informações básicas da pessoa">
+                            <p:growl id="msg0" />
+                            <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+                                <h:outputLabel/>
+                                <h:inputHidden id="idpessoa" value="#{mbPessoa.pessoa.idPessoa}"/>
+
+                                <h:outputLabel for="nomePessoa" value="Nome: "/>
+                                <p:inputText id="nomePessoa" size="40" value="#{mbPessoa.pessoa.nome}" required="true" requiredMessage="Campo obrigatório" onkeyup="this.value = this.value.toUpperCase()"/>
+                                    
+                                <h:outputLabel for="telefone" value="Telefone: "/>
+                                <p:inputMask id="telefone" value="#{mbPessoa.pessoa.telefone}" required="true" requiredMessage="Campo obrigatório" mask="(99)99999-9999"/>
+                                
+                                <h:outputLabel for="email" value="E-mail: "/>
+                                <p:inputText id="email" value="#{mbPessoa.pessoa.email}" required="true" requiredMessage="Campo obrigatório">
+                                    <f:validator validatorId="emailValidator"/>
+                                </p:inputText>
+                                
+                                <h:outputLabel for="cpf" value="CPF:"/>
+                                <p:inputText id="cpf" size="40" value="#{mbPessoa.pessoa.cpf}"
+                                             required="true" requiredMessage="O campo CPF é obrigatório">
+                                    <f:validator validatorId="cpfValidator"/>
+                                </p:inputText>
+                                
+                                <h:outputLabel for="dataNascimento" value="Data de Nascimento: "/>
+                                <p:calendar id="dataNascimento" value="#{mbPessoa.pessoa.dataNascimento}" required="true" requiredMessage="Campo obrigatório" locale="pt_BR" navigator="true" effect="explode" pattern="dd/MM/yyyy"/>
+                                
+                                <h:outputLabel for="sexo" value="Sexo: "/>
+                                <p:selectOneMenu id="sexo" value="#{mbPessoa.pessoa.sexo.idSexo}">
+                                    <f:selectItems value="#{bbSexo.sexos}" var="sexo" itemValue="#{sexo.idSexo}" itemLabel="#{sexo.descricao}"/>
+                                </p:selectOneMenu> 
+                                
+                                <h:outputLabel for="usuario" value="Nome de usuário: "/>
+                                <p:inputText id="usuario" value="#{mbPessoa.pessoa.login}" size="20"/>
+                                
+                                <h:outputLabel for="senha" value="Senha: "/>
+                                <p:password id="senha" size="15" maxlength="8" promptLabel="Insira sua senha: " value="#{mbPessoa.verificaSenha}"
+                                            weakLabel="Senha Fraca" goodLabel="Senha moderada" strongLabel="Senha Forte" feedback="true"/>
+                                
+                                <h:outputLabel for="confirmasenha" value="Confirmar Senha: "/>
+                                <p:password id="confirmasenha" size="15" maxlength="8" value="#{mbPessoa.pessoa.senha}" promptLabel="Confirme sua senha: " feedback="true"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab title="Informações de endereço" id="infoEndereco">
+                        <p:panel header="Informações básicas do endereço">
+                            <p:growl id="msg1" />
+                            <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid1">
+                                <h:outputLabel for="cidade" value="Cidade: "/>
+                                <p:selectOneMenu id="cidade" value="#{mbPessoa.endereco.cidade.idCidade}">
+                                    <f:selectItems value="#{bbCidade.cidades}" var="cidade" itemValue="#{cidade.idCidade}" itemLabel="#{cidade.nome}"/>
+                                </p:selectOneMenu>
+                                 
+                                <h:outputLabel for="bairro" value="Bairro: "/>
+                                <p:inputText id="bairro" value="#{mbPessoa.endereco.bairro}" onkeyup="this.value = this.value.toUpperCase()"/>
+                                
+                                <h:outputLabel for="cep" value="CEP: "/>
+                                <p:inputText id="cep" value="#{mbPessoa.endereco.cep}" required="true" requiredMessage="Campo obrigatório">
+                                </p:inputText>
+                                
+                                <p:panel>
+                                     <p:commandButton value="Salvar" action="#{mbPessoa.addPessoa}" image="ui-icon ui-icon-disk" update="@form"/>
+                                     <p:commandButton value="Cancelar" actionListener="#{mbPessoa.limpPessoa}" image="ui-icon ui-icon-close" update="@form"/>
+                                </p:panel>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>
